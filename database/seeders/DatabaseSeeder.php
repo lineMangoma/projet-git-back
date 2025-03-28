@@ -21,8 +21,8 @@ class DatabaseSeeder extends Seeder
 
         \App\Models\User::factory()->create([
             'name' => 'gigi',
-            'email' => 'dixneuf@gmail.com',
-            'password' => Hash::make('dixneuf19'),
+            'email' => 'ephraim30@gmail.com',
+            'password' => Hash::make('password'),
         ]);
 
         // $this->call(ArcticleSeeder::class);
