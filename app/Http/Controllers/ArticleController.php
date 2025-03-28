@@ -33,8 +33,9 @@ class ArticleController extends Controller
             ]);
 
             $article->categories()->attach($request->categories);
+            $article->tags()->attach($request->tags);
 
-            return response()->json($article->load('categories'), 201);
+            return response()->json($article->load('categories', 'tags'), 201);
         } catch (\Exception $th) {
             return response()->json($th->getMessage(),500);
         }
@@ -60,6 +61,7 @@ class ArticleController extends Controller
             ]);
 
             $article->categories()->attach($request->category_id);
+            $article->tags()->attach($request->tags);
 
             return response()->json(new ArticleResource($article->load('categories')));
         } catch (\Exception $th) {
@@ -75,6 +77,7 @@ class ArticleController extends Controller
         try {
             // Détacher toutes les catégories
             $article->categories()->detach();
+            $article->tags()->detach();
             // Supprimer l'article
             $article->delete();
 
