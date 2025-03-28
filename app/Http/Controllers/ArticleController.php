@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ArticleRequest;
 use App\Http\Resources\ArticleResource;
 use App\Models\Article;
+use App\Models\Vue;
 use Illuminate\Http\Request;
 //use Str marche egalement mais c'est mieux de faire appel a Str depuis sa source
 use Illuminate\Support\Str;
@@ -45,6 +46,17 @@ class ArticleController extends Controller
 
     public function show( Article $article)
     {
+        $vue = $article->vues;
+
+        if ($vue) {
+            $vue->increment('nbr_vue');
+        } else {
+            Vue::create([
+                'article_id' => $article->id,
+                'nbr_vue' => 1, 
+            ]);
+        }
+
         return new ArticleResource($article->load('categories'));
     }
 
