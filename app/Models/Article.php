@@ -30,7 +30,7 @@ class Article extends Model
 
     public function vues()
     {
-        return $this->hasOne(Vue::class);
+        return $this->hasMany(Vue::class);
 
     }
     public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
