@@ -26,14 +26,20 @@ class TagsController extends Controller
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string',
-        ]);
-
-        $tag = Tags::create([
-            'name'=> $validated['name'],
-            'description' => $request->description
-        ]);
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string',
+            ]);
+    
+            $tag = Tags::create([
+                'name'=> $validated['name'],
+                'description' => $request->description
+            ]);
+            return response()->json($tag);
+        } catch (\Exception $th) {
+            return response()->json([''=> $th->getMessage()]);
+        }
+        
     }
 
 
