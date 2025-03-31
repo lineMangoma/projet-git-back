@@ -40,6 +40,7 @@ Route::apiResource('/comments', CommentController::class);
 Route::apiResource('/newsletter', NewsletterController::class);
 
 
+
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::apiResource('/tags', TagsController::class);
