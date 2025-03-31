@@ -38,9 +38,18 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category)
+    public function show($id)
     {
-        return $category;
+        $category = Category::find($id);
+
+        if (!$category) {
+            return response()->json([
+                'message' => 'Category not found'
+            ], 404);
+        }
+
+        $articles = $category->articles;
+        return response()->json($articles);
     }
 
     /**
@@ -59,19 +68,5 @@ class CategoryController extends Controller
         //
     }
 
-    public function getArticlebyCategorie($id){
-        $category = Category::find($id);
 
-        if (!$category) {
-            return response()->json([
-                'message' => 'Category not found'
-            ], 404); // Retourne une erreur 404 si la catégorie n'existe pas
-        }
-
-        // Récupérer tous les articles associés à cette catégorie
-        $articles = $category->articles;
-
-        // Retourner les articles sous forme de JSON
-        return response()->json($articles);
-    }
 }
