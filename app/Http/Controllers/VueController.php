@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\VueRessource;
 use App\Models\Vue;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class VueController extends Controller
      */
     public function index()
     {
-        return Vue::all();
+        return VueRessource::collection(Vue::paginate(1));
     }
 
     /**

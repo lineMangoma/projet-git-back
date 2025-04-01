@@ -36,6 +36,7 @@ class ArticleResource extends JsonResource
             'nb_likes' => $this->likes_count,
             'comments' => CommentResource::collection($this->comments),
             'category' => CategoryResource::collection($this->categories),
+            'tags' => $this->tags,
             'date_creation' => Carbon::parse($this->created_at)->diffForHumans(),
             'last_modif' => $this->updated_at,
         ];

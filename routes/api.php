@@ -6,6 +6,8 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\NewsletterController;
+
+use App\Http\Controllers\TagsController;
 use App\Http\Controllers\VueController;
 use App\Models\User;
 use Dotenv\Exception\ValidationException;
@@ -35,12 +37,12 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::apiResource('/articles', ArticleController::class);
-Route::apiResource('/vues', VueController::class);
 Route::apiResource('/categories', CategoryController::class);
 Route::apiResource('/comments', CommentController::class);
-Route::apiResource('/newsletter', NewsletterController::class);
+Route::apiResource('/newsletters', NewsletterController::class);
+
 
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
-
+Route::apiResource('/tags', TagsController::class);
