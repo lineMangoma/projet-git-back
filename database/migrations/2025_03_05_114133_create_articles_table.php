@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('slug');
-            $table->string('photo');
+            $table->longText('photo');
             $table->string('auteur', 40);
             $table->longText('content');
             $table->timestamps();
