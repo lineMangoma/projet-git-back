@@ -35,9 +35,10 @@ Route::group(['middleware' => ['auth:sanctum']], function () {
 });
 
 Route::apiResource('/articles', ArticleController::class);
+Route::get('/getLatestTreeArticle', [ArticleController::class, 'getLatestTreeArticle']);
 Route::apiResource('/categories', CategoryController::class);
 Route::apiResource('/comments', CommentController::class);
-Route::apiResource('/newsletter', NewsletterController::class);
+Route::apiResource('/newsletters', NewsletterController::class);
 
 
 

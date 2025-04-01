@@ -58,7 +58,7 @@ class AuthController extends Controller
         $credentials = ['email' => $request->email, 'password' => $request->password];
         try {
             if (!auth()->attempt($credentials)) {
-                return response()->json(['error' => 'Email or password incorrect ']);
+                return response()->json(['error' => 'Email or password incorrect '],400);
 
             }
             $user = User::where('email', $request->email)->firstOrFail();
@@ -68,7 +68,7 @@ class AuthController extends Controller
                 'data' => $user,
             ], 201);
         } catch (\Exception $exception) {
-            return response()->json(['error' => $exception->getMessage()]);
+            return response()->json(['error' => $exception->getMessage()], 500);
         }
 
 

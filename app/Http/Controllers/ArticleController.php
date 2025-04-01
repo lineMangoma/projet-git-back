@@ -86,4 +86,19 @@ class ArticleController extends Controller
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
+    public function getLatestTreeArticle(Article $article){
+        try {
+            $article = Article::latest()->take(3)->get();
+        $getTreeArticles = ArticleResource::collection($article);
+        return response()->json([
+            'data' => $getTreeArticles,
+        ]);
+        } catch (\Exception $message) {
+            return response()->json(['error'=> $message->getMessage()], 500);
+        }
+        
+    }
+
+    
 }
