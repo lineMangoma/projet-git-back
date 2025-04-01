@@ -32,6 +32,7 @@ class ArticleResource extends JsonResource
             "auteur" => $this->auteur,
             "content" => $this->content,
             'nbr_comment' => $this->comments->count(),
+            'nbr_vue' => $this->vues->first() ? $this->vues->first()->nbr_vue : 0,
             'nb_likes' => $this->likes_count,
             'comments' => CommentResource::collection($this->comments),
             'category' => CategoryResource::collection($this->categories),

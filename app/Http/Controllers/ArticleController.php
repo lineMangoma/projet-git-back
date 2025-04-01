@@ -44,9 +44,18 @@ class ArticleController extends Controller
     }
 
 
-    public function show( Article $article)
+    public function show(Article $article)
     {
-        return new ArticleResource($article->load('categories'));
+        // Vérifier s'il existe une vue pour cet article
+        $vue = $article->vues()->first();
+
+        if ($vue) {
+            $vue->increment('nbr_vue'); // Incrémente nbr_vue si une vue existe déjà
+        } else {
+            $article->vues()->create(['nbr_vue' => 1]); // Crée une nouvelle vue
+        }
+
+        return new ArticleResource($article->load('categories', 'vues')); // Charger aussi 'vues'
     }
 
     public function update(ArticleRequest $request, Article $article)
@@ -97,8 +106,8 @@ class ArticleController extends Controller
         } catch (\Exception $message) {
             return response()->json(['error'=> $message->getMessage()], 500);
         }
-        
+
     }
 
-    
+
 }
