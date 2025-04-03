@@ -29,7 +29,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             "photo" => $this->photo,
-            "auteur" => $this->auteur,
+            "auteur" => new UserResource($this->user),
             "content" => $this->content,
             'nbr_comment' => $this->comments->count(),
             'nbr_vue' => $this->vues->first() ? $this->vues->first()->nbr_vue : 0,

@@ -15,12 +15,13 @@ class ArticleController extends Controller
     public function index()
     {
         //return ArticleResource::collection(Article::paginate(1));
-        return ArticleResource::collection(Article::withCount(['likes'])->get());
+        return ArticleResource::collection(Article::with(['user', 'likes'])->get());
+
         // return Article::all();
     }
 
 
-    public function store(ArticleRequest $request)
+    public function store(Request $request)
     {
 
         try {
@@ -28,7 +29,7 @@ class ArticleController extends Controller
                 "title" => $request->title,
                 "slug" => Str::slug($request->title),
                 "photo" => $request->photo,
-                "auteur" => $request->auteur,
+                "user_id" => auth()->user()->id,
                 "content" => $request->content,
             ]);
 
@@ -37,15 +38,16 @@ class ArticleController extends Controller
 
             return response()->json($article->load('categories', 'tags'), 201);
         } catch (\Exception $th) {
-            return response()->json($th->getMessage(),500);
+            return response()->json($th->getMessage(), 500);
         }
 
 
     }
 
 
-    public function show(Article $article)
+    public function show(int $id)
     {
+        $article = Article::withCount("likes")->findOrFail($id);
         // Vérifier s'il existe une vue pour cet article
         $vue = $article->vues()->first();
 
@@ -96,15 +98,16 @@ class ArticleController extends Controller
         }
     }
 
-    public function getLatestTreeArticle(Article $article){
+    public function getLatestTreeArticle(Article $article)
+    {
         try {
             $article = Article::latest()->take(3)->get();
-        $getTreeArticles = ArticleResource::collection($article);
-        return response()->json([
-            'data' => $getTreeArticles,
-        ]);
+            $getTreeArticles = ArticleResource::collection($article);
+            return response()->json([
+                'data' => $getTreeArticles,
+            ]);
         } catch (\Exception $message) {
-            return response()->json(['error'=> $message->getMessage()], 500);
+            return response()->json(['error' => $message->getMessage()], 500);
         }
 
     }

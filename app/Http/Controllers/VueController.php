@@ -13,7 +13,7 @@ class VueController extends Controller
      */
     public function index()
     {
-        return VueRessource::collection(Vue::paginate(1));
+        return Vue::all();
     }
 
     /**

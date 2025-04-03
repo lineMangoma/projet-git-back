@@ -2,6 +2,9 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
+use App\Models\Tags;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Storage;
 use PhpParser\Node\Stmt\Return_;
@@ -17,15 +20,17 @@ class ArticleFactory extends Factory
      * @return array<string, mixed>
      */
     public function definition(): array
-{
-    return [
-        'title' => fake()->sentence(),
-        'slug' => fake()->slug(),
-        'photo' => fake()->imageUrl(200, 200),
-        'auteur' => fake()->name(),
-        'content' => fake()->paragraphs(3, true)
-    ];
-}
+    {
+        return [
+            'title' => fake()->sentence(),
+            'slug' => fake()->slug(),
+            'photo' => fake()->imageUrl(200, 200),
+            'user_id' => User::all()->random()->id,
+            'content' => fake()->paragraphs(3, true),
+            // 'categories' => Category::all()->random()->id,
+            // 'tags' => Tags::all()->random()->id,
+        ];
+    }
 
 
 }
