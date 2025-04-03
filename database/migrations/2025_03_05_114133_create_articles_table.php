@@ -1,11 +1,11 @@
 <?php
 
+use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -16,9 +16,9 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->string('photo');
-            $table->string('auteur', 40);
             $table->longText('content');
             $table->timestamps();
+            $table->foreignIdFor(User::class)->constrained()->cascadeOnDelete();
         });
     }
 
