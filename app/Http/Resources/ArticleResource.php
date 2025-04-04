@@ -34,7 +34,6 @@ class ArticleResource extends JsonResource
             'nbr_comment' => $this->comments->count(),
             'nbr_vue' => $this->vues->first() ? $this->vues->first()->nbr_vue : 0,
             'nb_likes' => $this->likes_count,
-            'comments' => CommentResource::collection($this->comments),
             'category' => CategoryResource::collection($this->categories),
             'tags' => $this->tags,
             'date_creation' => Carbon::parse($this->created_at)->diffForHumans(),
