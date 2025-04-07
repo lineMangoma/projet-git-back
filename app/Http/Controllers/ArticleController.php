@@ -15,7 +15,7 @@ class ArticleController extends Controller
     public function index()
     {
         //return ArticleResource::collection(Article::paginate(1));
-        return ArticleResource::collection(Article::with(['user', 'likes'])->paginate(10));
+        return ArticleResource::collection(Article::with(['user', 'likes'])->paginate(9));
 
         // return Article::all();
     }
@@ -67,14 +67,14 @@ class ArticleController extends Controller
                 "title" => $request->title,
                 "slug" => Str::slug($request->title),
                 "photo" => $request->photo,
-                "auteur" => $request->auteur,
+                "user_id" => auth()->user()->id,
                 "content" => $request->content,
             ]);
 
-            $article->categories()->attach($request->category_id);
+            $article->categories()->attach($request->categories);
             $article->tags()->attach($request->tags);
 
-            return response()->json(new ArticleResource($article->load('categories')));
+            return response()->json($article->load('categories', 'tags'), 201);
         } catch (\Exception $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
