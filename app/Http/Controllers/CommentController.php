@@ -25,19 +25,14 @@ class CommentController extends Controller
             $validated = $request->validate([
                 'content' => 'required|string',
                 'article_id' => 'required',
-
-
-
-
             ]);
+
             $validated['user_id'] = auth()->user()->id;
             $comment = Comment::create($validated);
 
             return response()->json([
-                "message" => "Comment add succesfully",
-                "comment" => $comment
+                "data" => $comment
             ]);
-
 
 
         } catch (\Exception $exception) {
@@ -46,9 +41,7 @@ class CommentController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
+  
     public function show(string $id)
     {
         // Récupérer les commentaires de l'article avec l'ID spécifié
