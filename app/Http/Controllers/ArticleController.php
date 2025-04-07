@@ -36,12 +36,10 @@ class ArticleController extends Controller
             $article->categories()->attach($request->categories);
             $article->tags()->attach($request->tags);
 
-            return response()->json($article->load('categories', 'tags'), 201);
+            return response()->json(["data" => $article], 201);
         } catch (\Exception $th) {
             return response()->json($th->getMessage(), 500);
         }
-
-
     }
 
 
@@ -60,25 +58,39 @@ class ArticleController extends Controller
         return new ArticleResource($article->load('categories', 'vues')); // Charger aussi 'vues'
     }
 
-    public function update(ArticleRequest $request, Article $article)
+    public function update(Request $request, Article $article)
     {
         try {
+            // Verifier si l'utilisateur connecté est l'auteur de l'article
+            if (auth()->user()->id !== $article->user_id) {
+                return response()->json(['error' => 'Unauthorized'], 403);
+            }
+
+            // Modifier l'article
             $article->update([
                 "title" => $request->title,
                 "slug" => Str::slug($request->title),
-                "photo" => $request->photo,
+                "photo" => $request->photo ?? $article->photo, // Garder l'ancienne photo si une nouvelle photo n'est pas fournie
                 "user_id" => auth()->user()->id,
                 "content" => $request->content,
             ]);
 
-            $article->categories()->attach($request->categories);
-            $article->tags()->attach($request->tags);
+            // Detache les anciennes catégories et tags
+            if ($request->has('categories')) {
+                $article->categories()->sync($request->categories); // Utilisation de sync pour mettre à jour les catégories
+            }
 
-            return response()->json($article->load('categories', 'tags'), 201);
+            if ($request->has('tags')) {
+                $article->tags()->sync($request->tags); // Utilisation de sync() pour mettre à jour les tags
+            }
+
+            // Retourne l'article mise à jour avec les nouvelles catégories et tags
+            return response()->json(["message" => "Modification reussie", "data" => $article->load('categories', 'tags')], 200);
         } catch (\Exception $th) {
             return response()->json(['error' => $th->getMessage()], 500);
         }
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -109,8 +121,5 @@ class ArticleController extends Controller
         } catch (\Exception $message) {
             return response()->json(['error' => $message->getMessage()], 500);
         }
-
     }
-
-
 }

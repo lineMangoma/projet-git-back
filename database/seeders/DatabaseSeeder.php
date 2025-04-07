@@ -35,9 +35,9 @@ class DatabaseSeeder extends Seeder
         
 
 
-        // $this->call(ArcticleSeeder::class);
+        $this->call(ArcticleSeeder::class);
 
-        $this->call(CommentSeeder::class);
+        // $this->call(CommentSeeder::class);
 
 
     }
