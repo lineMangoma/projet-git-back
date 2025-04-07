@@ -30,22 +30,19 @@ Route::get('/articles/{article}', [ArticleController::class, 'show']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
-// Newsletter, tags, vues : accessibles publiquement
+// Categories, Newsletter, tags, vues : accessibles publiquement
 Route::apiResource('/newsletters', NewsletterController::class);
 Route::apiResource('/tags', TagsController::class);
 Route::apiResource('/vues', VueController::class);
+Route::apiResource('/categories', CategoryController::class);
 
 // ------------------- ROUTES PROTÉGÉES ------------------- //
-
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
-
     // Like d'un article (protégé)
     Route::post('/articles/{articleId}/likes', ArticleLikeController::class);
 
     // Les autres routes (store, update, destroy, etc.) sont protégées
     Route::apiResource('/articles', ArticleController::class)->except(['index', 'show']);
-
-    Route::apiResource('/categories', CategoryController::class);
     Route::apiResource('/comments', CommentController::class);
 });
