@@ -23,8 +23,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Page d’accueil ou liste des articles
 Route::get('/articles', [ArticleController::class, 'index']);
 
+
 // Affichage d’un article individuel
 Route::get('/articles/{article}', [ArticleController::class, 'show']);
+Route::get('/comments/{article}', [CommentController::class, 'show']);
 
 // Login and Register
 Route::post('/login', [AuthController::class, 'login']);
@@ -44,5 +46,5 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Les autres routes (store, update, destroy, etc.) sont protégées
     Route::apiResource('/articles', ArticleController::class)->except(['index', 'show']);
-    Route::apiResource('/comments', CommentController::class);
+    Route::apiResource('/comments', CommentController::class)->except(['show']);
 });
