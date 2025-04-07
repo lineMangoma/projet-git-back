@@ -49,7 +49,12 @@ class CategoryController extends Controller
         }
 
         $articles = $category->articles;
-        return response()->json($articles);
+        return response()->json([
+            "data" => $articles
+        ]);
+            // 'data' =>json($articles);
+
+        // return response()->json($articles);
     }
 
     /**

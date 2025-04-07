@@ -18,7 +18,7 @@ class TagsController extends Controller
         } catch (\Exception $th) {
             return response()->json(["Erreur : "=> $th->getMessage()]);
         }
-        
+
     }
 
     /**
@@ -30,7 +30,7 @@ class TagsController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string',
             ]);
-    
+
             $tag = Tags::create([
                 'name'=> $validated['name'],
                 'description' => $request->description
@@ -39,13 +39,23 @@ class TagsController extends Controller
         } catch (\Exception $th) {
             return response()->json([''=> $th->getMessage()]);
         }
-        
+
     }
 
 
-    public function show(Tags $tags)
+    public function show($id)
     {
-        return response()->json($tags);
+        $tag = Tags::find($id);
+        if (!$tag) {
+            return response()->json([
+                'message' => 'Tag not found'
+            ], 404);
+        }
+
+        $articles = $tag->articles;
+        return response()->json([
+            "data" => $articles
+        ]);
     }
 
 
@@ -55,17 +65,17 @@ class TagsController extends Controller
             $validated = $request->validate([
                 'name' => 'required|string',
             ]);
-            
+
             $tags ->update([
                 'name'=> $validated['name'],
                 'description' => $request->description
             ]);
-    
+
             return response()->json(['tags'=> $tags]);
         } catch (\Exception $th) {
             return response()->json(['Erreur : '=> $th->getMessage()]);
         }
-       
+
     }
 
 

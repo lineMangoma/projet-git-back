@@ -30,9 +30,9 @@ class DatabaseSeeder extends Seeder
         // User::factory(20)->create();
         // $this->call(CategorySeeder::class);
         // $this->call(TagsSeeder::class);
-   
 
-        
+
+
 
 
         $this->call(ArcticleSeeder::class);
