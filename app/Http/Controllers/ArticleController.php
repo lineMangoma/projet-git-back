@@ -64,25 +64,27 @@ class ArticleController extends Controller
             // Verifier si l'utilisateur connecté est l'auteur de l'article
             if (auth()->user()->id !== $article->user_id) {
                 return response()->json(['error' => 'Unauthorized'], 403);
+            }else{
+                
+                // Modifier l'article
+                $article->update([
+                    "title" => $request->title,
+                    "slug" => Str::slug($request->title),
+                    "photo" => $request->photo ?? $article->photo, // Garder l'ancienne photo si une nouvelle photo n'est pas fournie
+                    "user_id" => auth()->user()->id,
+                    "content" => $request->content,
+                ]);
+    
+                // Detache les anciennes catégories et tags
+                if ($request->has('categories')) {
+                    $article->categories()->sync($request->categories); // Utilisation de sync pour mettre à jour les catégories
+                }
+    
+                if ($request->has('tags')) {
+                    $article->tags()->sync($request->tags); // Utilisation de sync() pour mettre à jour les tags
+                }
             }
 
-            // Modifier l'article
-            $article->update([
-                "title" => $request->title,
-                "slug" => Str::slug($request->title),
-                "photo" => $request->photo ?? $article->photo, // Garder l'ancienne photo si une nouvelle photo n'est pas fournie
-                "user_id" => auth()->user()->id,
-                "content" => $request->content,
-            ]);
-
-            // Detache les anciennes catégories et tags
-            if ($request->has('categories')) {
-                $article->categories()->sync($request->categories); // Utilisation de sync pour mettre à jour les catégories
-            }
-
-            if ($request->has('tags')) {
-                $article->tags()->sync($request->tags); // Utilisation de sync() pour mettre à jour les tags
-            }
 
             // Retourne l'article mise à jour avec les nouvelles catégories et tags
             return response()->json(["message" => "Modification reussie", "data" => $article->load('categories', 'tags')], 200);
