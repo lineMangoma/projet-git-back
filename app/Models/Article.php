@@ -13,8 +13,8 @@ class Article extends Model
         'title',
         'slug',
         'photo',
-        'auteur',
-        'content'
+        'content',
+        'user_id',
     ];
 
     public function comments()
@@ -27,13 +27,24 @@ class Article extends Model
         return $this->belongsToMany(Category::class, 'article_category');
     }
 
-
-    public function tags(){
+    public function tags()
+    {
         return $this->belongsToMany(Tags::class, 'article_tag');
     }
+
+    public function vues()
+    {
+        return $this->hasMany(Vue::class);
+
+    }
+
     public function likes(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
         return $this->belongsToMany(User::class, 'likes');
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 
 }
