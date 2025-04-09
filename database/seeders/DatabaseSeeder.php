@@ -4,9 +4,9 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-use App\Models\Category;
-use App\Models\Comment;
 use App\Models\User;
+use App\Models\Comment;
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use League\CommonMark\Extension\Table\Table;
@@ -20,19 +20,18 @@ class DatabaseSeeder extends Seeder
     {
 
 
-        // \App\Models\User::factory(10)->create();
+        User::factory(10)->create();
 
-        // User::factory()->create([
-        //     'name' => 'gigi',
-        //     'email' => 'ggig19@gmail.com',
-        //     'password' => Hash::make('password'),
-        // ]);
-        // User::factory(20)->create();
-        // $this->call(CategorySeeder::class);
-        // $this->call(TagsSeeder::class);
+        User::factory()->create([
+            'name' => 'gigi',
+            'email' => 'ggig19@gmail.com',
+            'password' => Hash::make('password'),
+        ]);
+        User::factory(20)->create();
+        
+        $this->call(CategorySeeder::class);
 
-
-
+        $this->call(TagsSeeder::class);
 
 
         $this->call(ArcticleSeeder::class);
