@@ -25,11 +25,11 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
         ]);
 
-        // $this->call(ArcticleSeeder::class);
+         $this->call(ArcticleSeeder::class);
 
         // $this->call(CommentSeeder::class);
 
-        // $this->call(CategorySeeder::class);
+         $this->call(CategorySeeder::class);
 
 
 
